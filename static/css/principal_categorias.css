@@ -1,0 +1,123 @@
+/* ===== BARRA CATEGORÍAS KFC PREMIUM PROFESIONAL ===== */
+#barra-categorias {
+    width: calc(100% - 40px);
+    margin: 0 20px 30px;
+    min-height: 150px;
+    background: linear-gradient(135deg, #ffffff, #f5f5f5);
+    border-radius: 30px;
+    display: flex;
+    gap: 18px;
+    padding: 18px;
+    box-shadow:
+        0 12px 35px rgba(0,0,0,0.10),
+        inset 0 2px 10px rgba(255,255,255,0.9);
+    overflow-x: auto;
+    scrollbar-width: none;
+    border: 1px solid rgba(228, 0, 43, 0.08);
+}
+
+#barra-categorias::-webkit-scrollbar {
+    display: none;
+}
+
+/* BOTONES */
+.categoria-btn {
+    flex: 1;
+    min-width: 150px;
+    height: 600px;
+    background: linear-gradient(145deg, #e4002b, #c20024);
+    border-radius: 26px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 18px;
+    box-shadow:
+        0 10px 25px rgba(228, 0, 43, 0.28),
+        inset 0 2px 8px rgba(255,255,255,0.18);
+}
+
+/* brillo elegante */
+.categoria-btn::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    left: -50%;
+    width: 200%;
+    height: 70%;
+    background: rgba(255,255,255,0.12);
+    transform: rotate(-8deg);
+}
+
+/* hover premium */
+.categoria-btn:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow:
+        0 18px 35px rgba(228, 0, 43, 0.35),
+        inset 0 2px 10px rgba(255,255,255,0.25);
+}
+
+/* click */
+.categoria-btn:active {
+    transform: scale(0.98);
+}
+
+/* IMÁGENES AJUSTADAS */
+.categoria-btn img {
+    margin-top: 20px;
+    position: absolute;
+    top: 8px;
+    width: 88%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 18px;
+    transition: transform 0.4s ease;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+.categoria-btn:hover img {
+    transform: scale(1.06);
+}
+
+/* TEXTO */
+.categoria-btn span {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-size: 17px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    text-shadow: 0 3px 6px rgba(0,0,0,0.35);
+    background: rgba(0,0,0,0.18);
+    padding: 6px 16px;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    #barra-categorias {
+        min-height: 135px;
+        padding: 14px;
+        gap: 14px;
+    }
+
+    .categoria-btn {
+        min-width: 135px;
+        height: 165px;
+        border-radius: 22px;
+    }
+
+    .categoria-btn img {
+        height: 105px;
+    }
+
+    .categoria-btn span {
+        font-size: 14px;
+        padding: 5px 12px;
+    }
+}

@@ -1,0 +1,46 @@
+@media (max-width: 900px) {
+    body.chat-activo #contenido-principal {
+        margin-right: 0;
+    }
+
+    #chat-panel {
+        width: 90%;
+        right: 5%;
+    }
+
+    #seccion-carrusel {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .btn-carrusel {
+        height: 120px;
+    }
+}
+
+#seccion-carrusel,
+#barra-categorias,
+#seccion-destacados,
+#seccion-ofertas,
+#seccion-productos,
+#seccion-promociones,
+#banner-destacados,
+#seccion-footer {
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    margin-right: 20px;
+    transition: all 0.3s ease;
+}
+
+body.chat-activo #seccion-carrusel,
+body.chat-activo #barra-categorias,
+body.chat-activo #seccion-destacados,
+body.chat-activo #seccion-ofertas,
+body.chat-activo #seccion-productos,
+body.chat-activo #seccion-promociones,
+body.chat-activo #banner-destacados,
+body.chat-activo #seccion-footer {
+    width: calc(100% - 375px);
+    margin-left: 15px;
+    margin-right: 10px;
+}

@@ -1,0 +1,7 @@
+#pip install -r requirements.txt
+Flask==3.0.3
+peewee==3.17.6
+PyMySQL==1.1.1
+python-dotenv==1.0.1
+WTForms==3.1.2
+Flask-WTF==1.2.1

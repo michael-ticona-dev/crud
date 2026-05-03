@@ -1,0 +1,87 @@
+
+
+
+
+
+
+---
+
+---
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+```
+
+---
+
+#
+```
+
+---
+
+#
+```
+
+---
+
+
+
+```
+
+---
+
+#
+---
+
+
+```
+
+---
+
+# 13. responsive.css
+
+```css
+
+```
+
+---
+
+# HTML para enlazar todos los archivos:
+
+```html
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/body_general.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/principal_nav.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contenido_principal.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carrusel.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/categorias.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/destacados.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ofertas.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/productos.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/promociones.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat_ia.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+```
+
+---
+
+## ✅ Beneficios:
+
+* Código mucho más limpio
+* Más fácil encontrar errores
+* Mejor mantenimiento
+* Escalable para Flask
+* Diseño profesional
+* Ideal para proyectos grandes

@@ -1,0 +1,9 @@
+#contenido-principal {
+    margin-top: 120px;
+    padding: 1px;
+    transition: margin-right 0.3s ease;
+}
+
+body.chat-activo #contenido-principal {
+    margin-right: 1px;
+}

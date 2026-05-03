@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Pedidos — KFC UC</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_reset.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pedidos.css') }}">
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="gestion-nav">
+    <div class="nav-izq">
+      <img src="{{ url_for('static', filename='img/nav/KFC_logo.svg.png') }}" alt="KFC Logo" class="nav-logo-img">
+      <h1>Gestión de Pedidos</h1>
+    </div>
+    <div class="nav-der">
+      <a href="{{ url_for('inicio') }}" class="btn-nav">🏠 Inicio</a>
+      <span class="badge-total">{{ total_pedidos }} pedidos</span>
+    </div>
+  </nav>
+
+  <!-- ===== MENSAJES FLASH ===== -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash-msg flash-{{ category }}">
+            {{ message }}
+            <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- ===== CONTENIDO PRINCIPAL ===== -->
+  <main class="gestion-main">
+
+    <!-- PANEL CREAR NUEVO PEDIDO -->
+    <section class="panel-crear">
+      <h2>➕ Crear Nuevo Pedido</h2>
+      <form action="{{ url_for('crear_pedido') }}" method="POST" class="form-crear">
+        <div class="form-grid">
+          <div class="form-grupo">
+            <label for="producto">Producto</label>
+            <input type="text" id="producto" name="producto" placeholder="Ej: Bucket Familiar" required>
+          </div>
+          <div class="form-grupo">
+            <label for="precio">Precio (S/)</label>
+            <input type="number" id="precio" name="precio" placeholder="49.90" step="0.01" min="0.01" required>
+          </div>
+          <div class="form-grupo">
+            <label for="cantidad">Cantidad</label>
+            <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="99" required>
+          </div>
+          <div class="form-grupo">
+            <label for="estado">Estado</label>
+            <select id="estado" name="estado">
+              <option value="En carrito">🛒 En carrito</option>
+              <option value="Confirmado">✅ Confirmado</option>
+              <option value="En preparación">🔥 En preparación</option>
+              <option value="Entregado">📦 Entregado</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-crear">
+          <span>➕</span> Crear Pedido
+        </button>
+      </form>
+    </section>
+
+    <!-- TABLA DE PEDIDOS (READ) -->
+    <section class="panel-tabla">
+      <div class="tabla-header">
+        <h2>📋 Todos los Pedidos (MySQL)</h2>
+        <span class="tabla-count">{{ total_pedidos }} registros</span>
+      </div>
+
+      {% if pedidos | list | length > 0 %}
+      <div class="tabla-scroll">
+        <table class="tabla-pedidos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pedido in pedidos %}
+            <tr class="fila-pedido" id="fila-{{ pedido.id }}">
+              <td class="td-id">#{{ pedido.id }}</td>
+              <td class="td-producto">{{ pedido.producto }}</td>
+              <td class="td-precio">S/ {{ "%.2f"|format(pedido.precio) }}</td>
+              <td class="td-cantidad">{{ pedido.cantidad }}</td>
+              <td class="td-subtotal">S/ {{ "%.2f"|format(pedido.precio * pedido.cantidad) }}</td>
+              <td class="td-estado">
+                <span class="estado-badge estado-{{ pedido.estado | lower | replace(' ', '-') }}">
+                  {{ pedido.estado }}
+                </span>
+              </td>
+              <td class="td-fecha">{{ pedido.fecha_pedido.strftime('%d/%m/%Y %H:%M') }}</td>
+              <td class="td-acciones">
+                <button class="btn-editar" onclick="abrirModalEditar({{ pedido.id }}, '{{ pedido.producto }}', {{ pedido.precio }}, {{ pedido.cantidad }}, '{{ pedido.estado }}')">
+                  ✏️ Editar
+                </button>
+                <button class="btn-eliminar-row" onclick="confirmarEliminar({{ pedido.id }}, '{{ pedido.producto }}')">
+                  🗑️ Eliminar
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="tabla-vacia">
+        <div class="vacia-icono">🍗</div>
+        <p>No hay pedidos registrados</p>
+        <span>¡Crea uno nuevo con el formulario de arriba!</span>
+      </div>
+      {% endif %}
+    </section>
+
+  </main>
+
+  <!-- ===== MODAL EDITAR (UPDATE) ===== -->
+  <div class="modal-overlay" id="modal-editar" style="display:none;">
+    <div class="modal-contenido">
+      <div class="modal-header">
+        <h3>✏️ Editar Pedido <span id="modal-pedido-id"></span></h3>
+        <button class="modal-cerrar" onclick="cerrarModal()">✕</button>
+      </div>
+      <form id="form-editar" method="POST">
+        <div class="form-grid">
+          <div class="form-grupo">
+            <label for="edit-producto">Producto</label>
+            <input type="text" id="edit-producto" name="producto" required>
+          </div>
+          <div class="form-grupo">
+            <label for="edit-precio">Precio (S/)</label>
+            <input type="number" id="edit-precio" name="precio" step="0.01" min="0.01" required>
+          </div>
+          <div class="form-grupo">
+            <label for="edit-cantidad">Cantidad</label>
+            <input type="number" id="edit-cantidad" name="cantidad" min="1" max="99" required>
+          </div>
+          <div class="form-grupo">
+            <label for="edit-estado">Estado</label>
+            <select id="edit-estado" name="estado">
+              <option value="En carrito">🛒 En carrito</option>
+              <option value="Confirmado">✅ Confirmado</option>
+              <option value="En preparación">🔥 En preparación</option>
+              <option value="Entregado">📦 Entregado</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-botones">
+          <button type="button" class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL ELIMINAR (DELETE) ===== -->
+  <div class="modal-overlay" id="modal-eliminar" style="display:none;">
+    <div class="modal-contenido modal-eliminar-content">
+      <div class="modal-header modal-header-danger">
+        <h3>⚠️ Confirmar Eliminación</h3>
+        <button class="modal-cerrar" onclick="cerrarModalEliminar()">✕</button>
+      </div>
+      <div class="modal-body-eliminar">
+        <p>¿Estás seguro de eliminar el pedido <strong id="eliminar-nombre"></strong>?</p>
+        <p class="texto-peligro">Esta acción no se puede deshacer.</p>
+      </div>
+      <form id="form-eliminar" method="POST">
+        <div class="modal-botones">
+          <button type="button" class="btn-cancelar" onclick="cerrarModalEliminar()">Cancelar</button>
+          <button type="submit" class="btn-eliminar-confirm">🗑️ Sí, Eliminar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="gestion-footer">
+    <p>© 2026 KFC UC — Sistema de Gestión de Pedidos | Flask + Peewee ORM + MySQL</p>
+  </footer>
+
+  <script>
+    // ============ MODAL EDITAR (UPDATE) ============
+    function abrirModalEditar(id, producto, precio, cantidad, estado) {
+      document.getElementById('modal-editar').style.display = 'flex';
+      document.getElementById('modal-pedido-id').textContent = '#' + id;
+      document.getElementById('edit-producto').value = producto;
+      document.getElementById('edit-precio').value = precio;
+      document.getElementById('edit-cantidad').value = cantidad;
+      document.getElementById('edit-estado').value = estado;
+      document.getElementById('form-editar').action = '/pedidos/editar/' + id;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-editar').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    // ============ MODAL ELIMINAR (DELETE) ============
+    function confirmarEliminar(id, nombre) {
+      document.getElementById('modal-eliminar').style.display = 'flex';
+      document.getElementById('eliminar-nombre').textContent = '"' + nombre + '"';
+      document.getElementById('form-eliminar').action = '/pedidos/eliminar/' + id;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModalEliminar() {
+      document.getElementById('modal-eliminar').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    // Cerrar modales con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        cerrarModal();
+        cerrarModalEliminar();
+      }
+    });
+
+    // Cerrar modales al hacer clic fuera
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          cerrarModal();
+          cerrarModalEliminar();
+        }
+      });
+    });
+
+    // Auto-ocultar mensajes flash
+    setTimeout(() => {
+      document.querySelectorAll('.flash-msg').forEach(msg => {
+        msg.style.transition = 'all 0.5s ease';
+        msg.style.opacity = '0';
+        msg.style.transform = 'translateY(-20px)';
+        setTimeout(() => msg.remove(), 500);
+      });
+    }, 4000);
+  </script>
+
+</body>
+</html>

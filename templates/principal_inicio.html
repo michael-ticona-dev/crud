@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estructura Base KFC Flask</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_reset.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_body_general.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_nav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_contenido_principal.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_carrusel.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_categorias.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_destacados.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_ofertas.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_productos.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_promociones.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_chat_ia.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal_responsive.css') }}">
+</head>
+<body>
+
+  <nav id="nav-principal">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='img//nav/KFC_logo.svg.png') }}" alt="KFC Logo">
+    </div>
+
+    <div class="nav-menu">
+      <a href="/">Inicio</a>
+      <a href="/pedidos">Pedidos</a>
+      <a href="#">Menú</a>
+      <a href="#">Promociones</a>
+      <a href="#">Combos</a>
+    </div>
+
+    <div class="nav-busqueda">
+      <input type="text" placeholder="Buscar en KFC...">
+    </div>
+
+    <div class="nav-acciones">
+      <button class="btn-carrito">
+        🛒 <span id="contador-carrito">{{ total_items }}</span>
+      </button>
+
+      <button class="btn-usuario">
+        👤
+      </button>
+    </div>
+  </nav>
+
+  <div id="chat-ia"></div>
+  <div id="chat-panel">
+    <div class="carrito-header">
+      <h3><span>🛒</span> Mi Carrito</h3>
+      <button class="btn-vaciar" id="btn-vaciar-carrito">Vaciar todo</button>
+    </div>
+    <div class="carrito-items" id="carrito-items">
+      <!-- Los items se cargan dinámicamente desde JS -->
+    </div>
+    <div class="carrito-footer">
+      <div class="carrito-total">
+        <span class="carrito-total-label">Total:</span>
+        <span class="carrito-total-precio" id="carrito-total">S/ 0.00</span>
+      </div>
+      <button class="btn-checkout" id="btn-checkout">Confirmar Pedido</button>
+    </div>
+  </div>
+
+  <div id="contenido-principal">
+
+    <div id="seccion-carrusel">
+      <button id="btn-anterior" class="control-carrusel">❮</button>
+      <button id="btn-siguiente" class="control-carrusel">❯</button>
+
+      <div id="contenedor-carrusel">
+        <div class="btn-carrusel">
+          <img src="{{ url_for('static', filename='img/carrusel/banner_1.jpg') }}" alt="Banner 1">
+        </div>
+        <div class="btn-carrusel">
+          <img src="{{ url_for('static', filename='img/carrusel/banner_2.jpg') }}" alt="Banner 2">
+        </div>
+        <div class="btn-carrusel">
+          <img src="{{ url_for('static', filename='img/carrusel/banner_3.jpg') }}" alt="Banner 3">
+        </div>
+        <!-- Duplicados -->
+        <div class="btn-carrusel">
+          <img src="{{ url_for('static', filename='img/carrusel/banner_1.jpg') }}" alt="Banner 1">
+        </div>
+        <div class="btn-carrusel">
+          <img src="{{ url_for('static', filename='img/carrusel/banner_2.jpg') }}" alt="Banner 2">
+        </div>
+      </div>
+    </div>
+
+    <!-- BANNER DESTACADOS -->
+    <div id="banner-destacados" class="#banner-destacados">
+      <div class="track-destacados">
+        <div class="texto-carrusel">
+          CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS •
+        </div>
+        <div class="texto-carrusel">
+          CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS • CATEGORÍAS •
+        </div>
+      </div>
+    </div>
+
+    <div id="barra-categorias">
+      <div class="categoria-btn">
+        <img src="{{ url_for('static', filename='img/categorias/pollo.jpg') }}" alt="Pollo">
+        <span>Pollo</span>
+      </div>
+      <div class="categoria-btn">
+        <img src="{{ url_for('static', filename='img/categorias/burger.jpg') }}" alt="Hamburguesas">
+        <span>Burgers</span>
+      </div>
+      <div class="categoria-btn">
+        <img src="{{ url_for('static', filename='img/categorias/combo.jpg') }}" alt="Combos">
+        <span>Combos</span>
+      </div>
+      <div class="categoria-btn">
+        <img src="{{ url_for('static', filename='img/categorias/bebida.jpg') }}" alt="Bebidas">
+        <span>Bebidas</span>
+      </div>
+    </div>
+
+    <!-- BANNER DESTACADOS -->
+    <div id="banner-destacados" class="#banner-destacados">
+      <div class="track-destacados">
+        <div class="texto-carrusel">
+          DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS •
+        </div>
+        <div class="texto-carrusel">
+          DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS • DESTACADOS •
+        </div>
+      </div>
+    </div>
+
+    <div id="seccion-destacados">
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="columna-destacados">
+        <div class="destacado-item" data-id="combo1">
+          <img src="{{ url_for('static', filename='img/destacados/combo_1.jpg') }}" alt="Bucket">
+          <div class="destacado-info">
+            <h3>Bucket Familiar</h3>
+            <p>8 piezas + papas + bebidas</p>
+            <div class="calificacion">
+              <div class="estrellas">
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+              </div>
+              <span class="calificacion-texto">5.0 por la comunidad</span>
+            </div>
+            <span>S/ 49.90</span>
+          </div>
+          <button class="btn-agregar" data-id="combo1" data-nombre="Bucket Familiar" data-precio="49.90" data-img="/static/img/destacados/combo_1.jpg">Agregar</button>
+        </div>
+
+        <div class="destacado-item" data-id="combo2">
+          <img src="{{ url_for('static', filename='img/destacados/combo_2.jpg') }}" alt="Zinger Burger">
+          <div class="destacado-info">
+            <h3>Zinger Burger</h3>
+            <p>Picante, crujiente y jugosa</p>
+            <div class="calificacion">
+              <div class="estrellas">
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+              </div>
+              <span class="calificacion-texto">5.0 por la comunidad</span>
+            </div>
+            <span>S/ 18.90</span>
+          </div>
+          <button class="btn-agregar" data-id="combo2" data-nombre="Zinger Burger" data-precio="18.90" data-img="/static/img/destacados/combo_2.jpg">Agregar</button>
+        </div>
+
+        <div class="destacado-item" data-id="combo3">
+          <img src="{{ url_for('static', filename='img/destacados/combo_3.jpg') }}" alt="Combo Mega">
+          <div class="destacado-info">
+            <h3>Combo Mega</h3>
+            <p>Hamburguesa + papas + gaseosa</p>
+            <div class="calificacion">
+              <div class="estrellas">
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+              </div>
+              <span class="calificacion-texto">5.0 por la comunidad</span>
+            </div>
+            <span>S/ 27.90</span>
+          </div>
+          <button class="btn-agregar" data-id="combo3" data-nombre="Combo Mega" data-precio="27.90" data-img="/static/img/destacados/combo_3.jpg">Agregar</button>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA -->
+      <div class="columna-destacados">
+        <div class="destacado-item" data-id="combo4">
+          <img src="{{ url_for('static', filename='img/destacados/combo_4.jpg') }}" alt="Hot Wings">
+          <div class="destacado-info">
+            <h3>Hot Wings</h3>
+            <p>Alitas crocantes + salsa</p>
+            <div class="calificacion">
+              <div class="estrellas">
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+              </div>
+              <span class="calificacion-texto">5.0 por la comunidad</span>
+            </div>
+            <span>S/ 22.90</span>
+          </div>
+          <button class="btn-agregar" data-id="combo4" data-nombre="Hot Wings" data-precio="22.90" data-img="/static/img/destacados/combo_4.jpg">Agregar</button>
+        </div>
+
+        <div class="destacado-item" data-id="combo5">
+          <img src="{{ url_for('static', filename='img/destacados/combo_5.jpg') }}" alt="Twister Combo">
+          <div class="destacado-info">
+            <h3>Twister Combo</h3>
+            <p>Wrap + papas + bebida</p>
+            <div class="calificacion">
+              <div class="estrellas">
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+              </div>
+              <span class="calificacion-texto">5.0 por la comunidad</span>
+            </div>
+            <span>S/ 24.90</span>
+          </div>
+          <button class="btn-agregar" data-id="combo5" data-nombre="Twister Combo" data-precio="24.90" data-img="/static/img/destacados/combo_5.jpg">Agregar</button>
+        </div>
+
+        <div class="destacado-item" data-id="combo6">
+          <img src="{{ url_for('static', filename='img/destacados/combo_6.jpg') }}" alt="Mega Box">
+          <div class="destacado-info">
+            <h3>Mega Box</h3>
+            <p>Full combo premium</p>
+            <div class="calificacion">
+              <div class="estrellas">
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+                <span class="estrella">★</span>
+              </div>
+              <span class="calificacion-texto">5.0 por la comunidad</span>
+            </div>
+            <span>S/ 54.90</span>
+          </div>
+          <button class="btn-agregar" data-id="combo6" data-nombre="Mega Box" data-precio="54.90" data-img="/static/img/destacados/combo_6.jpg">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BANNER DESTACADOS -->
+    <div id="banner-destacados" class="#banner-destacados">
+      <div class="track-destacados">
+        <div class="texto-carrusel">
+          OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS
+        </div>
+        <div class="texto-carrusel">
+          OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS • OFERTAS
+        </div>
+      </div>
+    </div>
+
+    <div id="seccion-ofertas">
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="columna-ofertas">
+        <div class="oferta-item">
+          <img src="{{ url_for('static', filename='img/ofertas/oferta_1.jpg') }}">
+          <div class="oferta-info">
+            <h3>Combo Explosivo</h3>
+            <p>2 burgers + papas + bebida</p>
+            <div class="precios">
+              <span class="precio-viejo">S/ 49.90</span>
+              <span class="precio-oferta">S/ 29.90</span>
+            </div>
+          </div>
+          <button class="btn-agregar btn-oferta" data-nombre="Combo Explosivo" data-precio="29.90" data-img="/static/img/ofertas/oferta_1.jpg">Pedir</button>
+        </div>
+
+        <div class="oferta-item">
+          <img src="{{ url_for('static', filename='img/ofertas/oferta_2.jpg') }}">
+          <div class="oferta-info">
+            <h3>Bucket Duo</h3>
+            <p>Pollo + papas + gaseosa</p>
+            <div class="precios">
+              <span class="precio-viejo">S/ 59.90</span>
+              <span class="precio-oferta">S/ 39.90</span>
+            </div>
+          </div>
+          <button class="btn-agregar btn-oferta" data-nombre="Bucket Duo" data-precio="39.90" data-img="/static/img/ofertas/oferta_2.jpg">Pedir</button>
+        </div>
+
+        <div class="oferta-item">
+          <img src="{{ url_for('static', filename='img/ofertas/oferta_3.jpg') }}">
+          <div class="oferta-info">
+            <h3>Super Combo</h3>
+            <p>Hamburguesa + alitas</p>
+            <div class="precios">
+              <span class="precio-viejo">S/ 45.90</span>
+              <span class="precio-oferta">S/ 34.90</span>
+            </div>
+          </div>
+          <button class="btn-agregar btn-oferta" data-nombre="Super Combo" data-precio="34.90" data-img="/static/img/ofertas/oferta_3.jpg">Pedir</button>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA -->
+      <div class="columna-ofertas">
+        <div class="oferta-item">
+          <img src="{{ url_for('static', filename='img/ofertas/oferta_4.jpg') }}">
+          <div class="oferta-info">
+            <h3>Hot Wings Pack</h3>
+            <p>8 alitas + papas</p>
+            <div class="precios">
+              <span class="precio-viejo">S/ 39.90</span>
+              <span class="precio-oferta">S/ 24.90</span>
+            </div>
+          </div>
+          <button class="btn-agregar btn-oferta" data-nombre="Hot Wings Pack" data-precio="24.90" data-img="/static/img/ofertas/oferta_4.jpg">Pedir</button>
+        </div>
+
+        <div class="oferta-item">
+          <img src="{{ url_for('static', filename='img/ofertas/oferta_5.jpg') }}">
+          <div class="oferta-info">
+            <h3>Twister Combo</h3>
+            <p>Wrap + papas + bebida</p>
+            <div class="precios">
+              <span class="precio-viejo">S/ 42.90</span>
+              <span class="precio-oferta">S/ 27.90</span>
+            </div>
+          </div>
+          <button class="btn-agregar btn-oferta" data-nombre="Twister Combo" data-precio="27.90" data-img="/static/img/ofertas/oferta_5.jpg">Pedir</button>
+        </div>
+
+        <div class="oferta-item">
+          <img src="{{ url_for('static', filename='img/ofertas/oferta_6.jpg') }}">
+          <div class="oferta-info">
+            <h3>Mega Box</h3>
+            <p>Full combo premium</p>
+            <div class="precios">
+              <span class="precio-viejo">S/ 79.90</span>
+              <span class="precio-oferta">S/ 54.90</span>
+            </div>
+          </div>
+          <button class="btn-agregar btn-oferta" data-nombre="Mega Box" data-precio="54.90" data-img="/static/img/ofertas/oferta_6.jpg">Pedir</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="seccion-footer">
+      <div class="footer-bloque">
+        <h3>KFC UC</h3>
+        <p>Comida rápida con estilo moderno. Pide rápido, come mejor.</p>
+      </div>
+
+      <div class="footer-bloque">
+        <h3>Enlaces</h3>
+        <a href="#">Menú</a>
+        <a href="#">Ofertas</a>
+        <a href="#">Combos</a>
+        <a href="#">Carrito</a>
+      </div>
+
+      <div class="footer-bloque">
+        <h3>Contacto</h3>
+        <a href="#">WhatsApp</a>
+        <a href="#">Instagram</a>
+        <a href="#">Soporte</a>
+        <a href="#">Ubicación</a>
+      </div>
+    </div>
+
+    <div id="footer-bottom">
+      © 2026 KFC UC - Todos los derechos reservados
+    </div>
+
+  </div>
+
+  <script>
+    const chatIa = document.getElementById('chat-ia');
+    const body = document.body;
+    const contenedorCarrusel = document.getElementById('contenedor-carrusel');
+    const slides = document.querySelectorAll('.btn-carrusel');
+
+    let indiceCarrusel = 0;
+    const totalOriginal = 3;
+
+    chatIa.addEventListener('click', () => {
+      body.classList.toggle('chat-activo');
+      if (body.classList.contains('chat-activo')) {
+        cargarPedidos();
+      }
+    });
+
+    // El botón del carrito en el nav también abre el panel
+    const btnCarritoNav = document.querySelector('.nav-acciones .btn-carrito');
+    if (btnCarritoNav) {
+      btnCarritoNav.addEventListener('click', () => {
+        body.classList.toggle('chat-activo');
+        if (body.classList.contains('chat-activo')) {
+          cargarPedidos();
+        }
+      });
+    }
+
+    // Función global para cargar pedidos (se define en carrito.js)
+    function cargarPedidos() {
+      if (typeof window.cargarPedidosCarrito === 'function') {
+        window.cargarPedidosCarrito();
+      }
+    }
+
+    function actualizarCarrusel(animar = true) {
+      contenedorCarrusel.style.transition = animar
+        ? 'transform 0.8s ease-in-out'
+        : 'none';
+
+      contenedorCarrusel.style.transform = `translateX(-${indiceCarrusel * 100}%)`;
+    }
+
+    function siguienteSlide() {
+      indiceCarrusel++;
+      actualizarCarrusel(true);
+
+      /* Cuando llega al clon */
+      if (indiceCarrusel === totalOriginal) {
+        setTimeout(() => {
+          indiceCarrusel = 0;
+          actualizarCarrusel(false);
+        }, 800);
+      }
+    }
+
+    function anteriorSlide() {
+      if (indiceCarrusel === 0) {
+        indiceCarrusel = totalOriginal;
+        actualizarCarrusel(false);
+
+        setTimeout(() => {
+          indiceCarrusel--;
+          actualizarCarrusel(true);
+        }, 20);
+      } else {
+        indiceCarrusel--;
+        actualizarCarrusel(true);
+      }
+    }
+
+    setInterval(siguienteSlide, 4000);
+
+    document.getElementById('btn-siguiente').addEventListener('click', siguienteSlide);
+    document.getElementById('btn-anterior').addEventListener('click', anteriorSlide);
+  </script>
+
+
+  <script src="{{ url_for('static', filename='js/carrito.js') }}"></script>
+</body>
+</html>
